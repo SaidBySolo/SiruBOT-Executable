@@ -12,12 +12,8 @@ bot:
 #   id: "Discord Webhook Id" # Your webhook id
 #   token: "Discord Webhook Token" # Your webhook token
 database:
-  mysql:
-    host: "localhost" # Your mysql host
-    port: 3306 # Your mysql port
-    username: "root" # Your mysql user
-    password: "super-secret-passwd" # Your mysql password
-    database: "siru" # Your mysql databases
+  sqlite:
+    path: "kaffu.db" # Your sqlite database path
   mongodb:
     url: "mongodb://localhost:27017/sirubot?authSource=admin" # Your mongoDB URL
     username: "root" # Your mongoDB username

@@ -19,7 +19,7 @@ interface StatsMetricsArgs {
 export class DatabaseHelper {
   private log: Logger;
   protected client: KafuuClient;
-  public mySqlDataSource: DataSource;
+  public SQLiteDataSource: DataSource;
   public mongoose: typeof import("mongoose") | undefined;
 
   constructor(client: KafuuClient) {
@@ -31,14 +31,14 @@ export class DatabaseHelper {
 
   public async setup() {
     this.log.debug("Setup databases...");
-    this.mySqlDataSource = new DataSource({
-      type: "mysql",
+    this.SQLiteDataSource = new DataSource({
+      type: "sqlite",
       entities,
-      ...this.client.settings.database.mysql,
+      database: this.client.settings.database.sqlite.path,
       logging: this.client.bootStrapperArgs.debug,
       synchronize: process.env.NODE_ENV === "production" ? false : true,
     });
-    await this.mySqlDataSource.initialize();
+    await this.SQLiteDataSource.initialize();
 
     const mongoose: typeof import("mongoose") = await connect(
       this.client.settings.database.mongodb.url,
@@ -57,7 +57,7 @@ export class DatabaseHelper {
 
   get isReady() {
     return (
-      this.mySqlDataSource.isInitialized &&
+      this.SQLiteDataSource.isInitialized &&
       this.mongoose &&
       this.mongoose.connection.readyState == 1
     );
@@ -96,7 +96,7 @@ export class DatabaseHelper {
       Object.keys(data) ? data : "Empty data",
     );
     const guildRepository: Repository<TypeORMGuild> =
-      this.mySqlDataSource.getRepository(TypeORMGuild);
+      this.SQLiteDataSource.getRepository(TypeORMGuild);
     await guildRepository.upsert(
       {
         discordGuildId,
@@ -125,7 +125,7 @@ export class DatabaseHelper {
     } = options;
     this.log.debug(`Insert metrics data @ ${clusterId}/${playingPlayers}`);
     const metricsRepository: Repository<TypeORMMetrics> =
-      this.mySqlDataSource.getRepository(TypeORMMetrics);
+      this.SQLiteDataSource.getRepository(TypeORMMetrics);
     await metricsRepository.insert({
       clusterId,
       playingPlayers,

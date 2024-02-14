@@ -29,12 +29,8 @@ export interface KafuuSettings {
     };
   };
   database: {
-    mysql: {
-      host: string; // MySQL host string
-      port: number; // MySQL port number
-      username: string; // MySQL username string
-      password: string; // MySQL password string
-      database: string; // MySQL database string
+    sqlite: {
+      path: string; // SQLite path string
     };
     mongodb: {
       url: string; // MongoDB URL string
