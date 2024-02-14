@@ -15,7 +15,7 @@ database:
   sqlite:
     path: "kaffu.db" # Your sqlite database path
   mongodb:
-    url: "mongodb://localhost:27017/sirubot?authSource=admin" # Your mongoDB URL
+    url: "mongodb://127.0.0.1:27017/sirubot?authSource=admin" # Your mongoDB URL
     username: "root" # Your mongoDB username
     password: "password" # Your mongoDB password
 audio:

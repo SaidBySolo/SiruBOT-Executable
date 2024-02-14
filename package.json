@@ -25,6 +25,7 @@
     "rotating-file-stream": "^3.1.0",
     "shoukaku": "^3.4.0",
     "slyrics": "^1.0.22",
+    "sqlite3": "^5.1.7",
     "tslog": "^3.3.2",
     "typeorm": "^0.3.17",
     "undici": "^4.15.1",
@@ -42,18 +43,34 @@
     "eslint-plugin-security": "^1.7.1",
     "prettier": "^3.1.0",
     "rimraf": "^5.0.5",
+    "ts-loader": "^9.5.1",
     "tsc-watch": "^6.0.4",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-node-externals": "^3.0.0"
   },
   "scripts": {
     "lint": "eslint --ext .ts ./src",
     "lint:fix": "eslint --ext .ts ./src --fix",
+    "build:executable": "yarn webpack --config ./webpack.config.js && pkg .",
     "build:ts": "yarn run build:clean && tsc --project ./tsconfig.json",
     "build:clean": "yarn run rimraf build",
     "build:watch": "yarn run rimraf build && yarn run tsc --watch",
     "build:deploy": "yarn run build:ts && yarn run deploy:commands",
     "deploy:clean": "node ./build -d -r -c settings.yaml -clean",
     "deploy:commands": "node ./build -d -r -c settings.yaml"
+  },
+  "pkg": {
+    "scripts": "dist/*.js",
+    "targets": [
+      "node18-linux-x64",
+      "node18-win-x64"
+    ],
+    "outputPath": "dist"
+  },
+  "bin": {
+    "app": "./dist/main.js"
   },
   "_moduleAliases": {
     "@/": "build/src",
